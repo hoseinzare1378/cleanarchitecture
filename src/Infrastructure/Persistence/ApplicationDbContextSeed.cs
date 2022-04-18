@@ -1,22 +1,23 @@
 ﻿using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.ValueObjects;
 using CleanArchitecture.Infrastructure.Identity;
+using Domain.Entities.System;
 using Microsoft.AspNetCore.Identity;
 
 namespace CleanArchitecture.Infrastructure.Persistence;
 
 public static class ApplicationDbContextSeed
 {
-    public static async Task SeedDefaultUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public static async Task SeedDefaultUserAsync(UserManager<User> userManager, RoleManager<Role> roleManager)
     {
-        var administratorRole = new IdentityRole("Administrator");
+        var administratorRole = new Role("Administrator");
 
         if (roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await roleManager.CreateAsync(administratorRole);
         }
 
-        var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
+        var administrator = new User { UserName = "administrator@localhost", Email = "administrator@localhost" };
 
         if (userManager.Users.All(u => u.UserName != administrator.UserName))
         {

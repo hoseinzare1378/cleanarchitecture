@@ -20,16 +20,16 @@ public class Program
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
-                // if (context.Database.IsSqlServer())
-                // {
-                //     context.Database.Migrate();
-                // }
+                if (context.Database.IsSqlServer())
+                {
+                    context.Database.Migrate();
+                }
 
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var roleManager = services.GetRequiredService<RoleManager<Role>>();
 
-                // await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
-                // await ApplicationDbContextSeed.SeedSampleDataAsync(context);
+                await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
+                await ApplicationDbContextSeed.SeedSampleDataAsync(context);
             }
             catch (Exception ex)
             {
