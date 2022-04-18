@@ -30,7 +30,7 @@ public class RequestLoggerTests
 
         await requestLogger.Process(new CreateTodoItemCommand { ListId = 1, Title = "title" }, new CancellationToken());
 
-        _identityService.Verify(i => i.GetUserNameAsync(It.IsAny<string>()), Times.Once);
+        _identityService.Verify(i => i.GetUserNameAsync(Int32.Parse(It.IsAny<string>())), Times.Once);
     }
 
     [Test]
@@ -40,6 +40,6 @@ public class RequestLoggerTests
 
         await requestLogger.Process(new CreateTodoItemCommand { ListId = 1, Title = "title" }, new CancellationToken());
 
-        _identityService.Verify(i => i.GetUserNameAsync(It.IsAny<string>()), Times.Never);
+        _identityService.Verify(i => i.GetUserNameAsync(Int32.Parse(It.IsAny<string>())), Times.Never);
     }
 }
