@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Common.Models;
+using Domain.Entities.System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +9,13 @@ namespace CleanArchitecture.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
+    private readonly UserManager<User> _userManager;
+    private readonly IUserClaimsPrincipalFactory<User> _userClaimsPrincipalFactory;
     private readonly IAuthorizationService _authorizationService;
 
     public IdentityService(
-        UserManager<ApplicationUser> userManager,
-        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
+        UserManager<User> userManager,
+        IUserClaimsPrincipalFactory<User> userClaimsPrincipalFactory,
         IAuthorizationService authorizationService)
     {
         _userManager = userManager;
@@ -22,7 +23,7 @@ public class IdentityService : IIdentityService
         _authorizationService = authorizationService;
     }
 
-    public async Task<string> GetUserNameAsync(string userId)
+    public async Task<string> GetUserNameAsync(int userId)
     {
         var user = await _userManager.Users.FirstAsync(u => u.Id == userId);
 
@@ -31,7 +32,7 @@ public class IdentityService : IIdentityService
 
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
     {
-        var user = new ApplicationUser
+        var user = new User
         {
             UserName = userName,
             Email = userName,
@@ -39,17 +40,17 @@ public class IdentityService : IIdentityService
 
         var result = await _userManager.CreateAsync(user, password);
 
-        return (result.ToApplicationResult(), user.Id);
+        return (result.ToApplicationResult(), user.Id.ToString());
     }
 
-    public async Task<bool> IsInRoleAsync(string userId, string role)
+    public async Task<bool> IsInRoleAsync(int userId, string role)
     {
         var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
         return user != null && await _userManager.IsInRoleAsync(user, role);
     }
 
-    public async Task<bool> AuthorizeAsync(string userId, string policyName)
+    public async Task<bool> AuthorizeAsync(int userId, string policyName)
     {
         var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
@@ -65,14 +66,14 @@ public class IdentityService : IIdentityService
         return result.Succeeded;
     }
 
-    public async Task<Result> DeleteUserAsync(string userId)
+    public async Task<Result> DeleteUserAsync(int userId)
     {
         var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
 
         return user != null ? await DeleteUserAsync(user) : Result.Success();
     }
 
-    public async Task<Result> DeleteUserAsync(ApplicationUser user)
+    public async Task<Result> DeleteUserAsync(User user)
     {
         var result = await _userManager.DeleteAsync(user);
 

@@ -36,10 +36,10 @@ public static class DependencyInjection
 
         services.AddScoped<IDomainEventService, DomainEventService>();
 
-        services
-            .AddDefaultIdentity<ApplicationUser>()
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+        // services
+        //     .AddDefaultIdentity<ApplicationUser>()
+        //     .AddRoles<IdentityRole>()
+        //     .AddEntityFrameworkStores<ApplicationDbContext>();
 
         // services.AddIdentityServer()
         //     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();

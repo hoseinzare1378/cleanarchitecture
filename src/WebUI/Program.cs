@@ -1,5 +1,6 @@
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Persistence;
+using Domain.Entities.System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,8 +25,8 @@ public class Program
                 //     context.Database.Migrate();
                 // }
 
-                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = services.GetRequiredService<UserManager<User>>();
+                var roleManager = services.GetRequiredService<RoleManager<Role>>();
 
                 // await ApplicationDbContextSeed.SeedDefaultUserAsync(userManager, roleManager);
                 // await ApplicationDbContextSeed.SeedSampleDataAsync(context);
