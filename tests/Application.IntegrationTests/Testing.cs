@@ -2,6 +2,7 @@
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.WebUI;
+using Domain.Entities.System;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -100,9 +101,9 @@ public class Testing
     {
         using var scope = _scopeFactory.CreateScope();
 
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-        var user = new ApplicationUser { UserName = userName, Email = userName };
+        var user = new User { UserName = userName, Email = userName };
 
         var result = await userManager.CreateAsync(user, password);
 
@@ -120,7 +121,7 @@ public class Testing
 
         if (result.Succeeded)
         {
-            _currentUserId = user.Id;
+            _currentUserId = user.Id.ToString();
 
             return _currentUserId;
         }

@@ -1,6 +1,6 @@
 using CleanArchitecture.Infrastructure.Identity;
 using CleanArchitecture.Infrastructure.Persistence;
-using Domain.Entities.System;
+using CleanArchitecture.Domain.Entities.System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
